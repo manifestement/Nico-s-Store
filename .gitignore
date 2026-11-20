@@ -1,0 +1,11 @@
+# Réglages locaux (Obsidian, Claude Code)
+.obsidian/
+.claude/
+
+# Dépendances et builds (le dossier app/ a aussi son propre .gitignore)
+node_modules/
+dist/
+
+# Systèmes
+.DS_Store
+Thumbs.db

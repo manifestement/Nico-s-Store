@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/unbounded';
+
+/* Thème Aurora */
+@theme {
+  --font-sans: 'Manrope Variable', system-ui, sans-serif;
+  --font-display: 'Unbounded Variable', system-ui, sans-serif;
+
+  --color-night: #0e0a24;
+  --color-deep: #150f35;
+  --color-sheet: #1b1442;
+  --color-bar: rgb(24 17 56 / 0.96);
+  --color-ink: #f5f3ff;
+  --color-soft: #ddd6fe;
+  --color-muted: #b8b2d9;
+  --color-faint: #9d97c2;
+  --color-lilac: #c4b5fd;
+  --color-pink: #f9a8d4;
+  --color-gain: #4ade80;
+  --color-loss: #fb7185;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-night);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overscroll-behavior: none;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+  input::placeholder {
+    color: var(--color-faint);
+  }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-pink);
+    outline-offset: 2px;
+  }
+}
+
+@utility aurora-grad {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+@utility aurora-ring {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899 40%, #f59e0b 70%, #22d3ee);
+}
+@utility glass {
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+@utility field {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(196 181 253 / 0.22);
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility sr-only-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes au-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+@keyframes au-hint {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 5px;
+  }
+}
+.au-float {
+  animation: au-float 6s ease-in-out infinite;
+}
+.au-hint {
+  animation: au-hint 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .au-float,
+  .au-hint {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 12px);
+}
