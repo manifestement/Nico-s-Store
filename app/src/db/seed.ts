@@ -1,8 +1,13 @@
 import { localDate } from '../domain/dates'
 import { inferBrand, inferLine } from '../domain/lines'
-import collectionMd from './collection-initiale.md?raw'
 import { countItems, createItem, listCategories, type NewItem } from './repo'
 import type { Sql } from './sql'
+
+// La collection d'origine (collection-initiale.md) reste en local, hors du dépôt public.
+// Absente (build GitHub Pages), l'appli démarre vide : Nico importe alors la sauvegarde
+// initiale créée par `npm run export:initial`.
+const local = import.meta.glob<string>('./collection-initiale.md', { query: '?raw', import: 'default', eager: true })
+export const LOCAL_COLLECTION_MD: string | undefined = Object.values(local)[0]
 
 export interface SeedRow {
   item: Omit<NewItem, 'category_id'>
@@ -44,8 +49,8 @@ export function parseCollectionMarkdown(md: string): SeedRow[] {
     })
 }
 
-export function seedIfEmpty(sql: Sql, md: string = collectionMd): number {
-  if (countItems(sql) > 0) return 0
+export function seedIfEmpty(sql: Sql, md: string | undefined = LOCAL_COLLECTION_MD): number {
+  if (!md || countItems(sql) > 0) return 0
   const catId = Object.fromEntries(listCategories(sql).map((c) => [c.name, c.id]))
   const rows = parseCollectionMarkdown(md)
   const at = localDate()

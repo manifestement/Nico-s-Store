@@ -14,7 +14,15 @@ C'est une appli web installable (PWA). Toutes les données restent **sur le tél
 
 > **Important :** utiliser l'appli depuis l'écran d'accueil, pas depuis un onglet Safari. Sinon Safari peut effacer les données d'un site peu visité.
 
-Au premier lancement, les 88 articles de l'Excel d'origine sont importés automatiquement. Ensuite, l'appli fonctionne même sans connexion.
+### Charger la collection au premier lancement
+
+La collection n'est pas publiée avec l'appli (le dépôt est public) : au premier lancement, l'appli est vide. Pour y mettre les articles de l'Excel d'origine :
+
+1. Sur l'ordinateur, créer la sauvegarde initiale (voir *Développement* : `npm run export:initial`). Elle est écrite dans `sauvegarde-initiale.sqlite` à la racine du projet.
+2. L'envoyer sur l'iPhone (AirDrop ou iCloud Drive).
+3. Dans l'appli : **Réglages > Importer**, puis choisir le fichier.
+
+Ensuite, l'appli fonctionne même sans connexion.
 
 ---
 
@@ -67,7 +75,10 @@ npm run dev        # serveur de développement
 npx vitest run     # tests (base, import, calculs)
 npm run build      # build de production dans app/dist
 npm run preview    # sert le build sur http://localhost:4173
+npm run export:initial   # crée ../sauvegarde-initiale.sqlite depuis la collection locale
 ```
+
+**Données privées.** La collection d'origine (`Tableau excel collection.md`, sa copie `app/src/db/collection-initiale.md`) et les sauvegardes `.sqlite` sont exclues du dépôt par le `.gitignore`. En local, si `app/src/db/collection-initiale.md` existe, l'appli de développement s'en sert pour se remplir au premier lancement et les tests sur la collection réelle s'exécutent ; sans ce fichier (build GitHub Pages), l'appli démarre vide et ces tests sont ignorés.
 
 Organisation :
 

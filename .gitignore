@@ -2,8 +2,12 @@
 .obsidian/
 .claude/
 
-# Cahier des charges et tableau d'origine (copie de travail de l'Excel)
+# Données personnelles : tableau d'origine, sa copie utilisée par l'appli en local,
+# et les sauvegardes (.sqlite). Le dépôt est public : rien de la collection ne doit y aller.
 Tableau excel collection.md
+app/src/db/collection-initiale.md
+*.sqlite
+*.sqlite3
 
 # Dépendances et builds (le dossier app/ a aussi son propre .gitignore)
 node_modules/

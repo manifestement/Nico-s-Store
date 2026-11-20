@@ -4,7 +4,7 @@ import { inferLine } from '../domain/lines'
 import { euToUs, formatSize, usToEu } from '../domain/sizes'
 import { conditionFactor, estimatedValue, simulateResale } from '../domain/valuation'
 import * as repo from './repo'
-import { parseCollectionMarkdown, seedIfEmpty } from './seed'
+import { LOCAL_COLLECTION_MD, parseCollectionMarkdown, seedIfEmpty } from './seed'
 import { migrate, wrap, type Sql } from './sql'
 
 const sqlite3 = await sqlite3InitModule()
@@ -20,7 +20,8 @@ beforeEach(() => {
   objets = cats.Objets
 })
 
-describe('import de la collection', () => {
+// Ces tests utilisent la vraie collection, présente seulement en local (pas dans le dépôt).
+describe.skipIf(!LOCAL_COLLECTION_MD)('import de la collection réelle', () => {
   it('lit les 88 articles et retrouve la valeur totale de l’Excel (20 515 €)', () => {
     expect(seedIfEmpty(sql)).toBe(88)
     const items = repo.listItems(sql, 'owned')
@@ -46,6 +47,19 @@ describe('import de la collection', () => {
     seedIfEmpty(sql)
     expect(seedIfEmpty(sql)).toBe(0)
     expect(repo.countItems(sql)).toBe(88)
+  })
+})
+
+describe('import d’un tableau', () => {
+  it('démarre vide sans tableau', () => {
+    expect(seedIfEmpty(sql, '')).toBe(0)
+    expect(repo.countItems(sql)).toBe(0)
+  })
+
+  it('range les chaussettes en accessoire', () => {
+    seedIfEmpty(sql, '| 1 | Air max 1 SUSAN | 9 | | 350 | 350 | DS | | |\n| 2 | Yeezy CHAUSSETTES | | | 15 | 15 | DS | | |')
+    const counts = Object.fromEntries(repo.listCategories(sql).map((c) => [c.name, c.item_count]))
+    expect(counts).toMatchObject({ Sneakers: 1, Accessoires: 1 })
   })
 
   it('normalise tailles, état et marque', () => {

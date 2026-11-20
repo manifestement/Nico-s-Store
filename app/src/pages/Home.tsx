@@ -267,7 +267,20 @@ export default function Home() {
           className="no-scrollbar flex min-h-0 flex-1 flex-col gap-1.5 px-4 pb-28"
           style={{ overflowY: c ? 'auto' : 'hidden' }}
         >
-          {items && !visible.length && (
+          {items && !valued.length && (
+            <Empty title="Ta collection est vide">
+              <span className="text-[13px] text-muted">Importe ta sauvegarde (Réglages › Importer) ou ajoute ton premier article.</span>
+              <div className="flex gap-2">
+                <Link to="/reglages" className="flex h-10 items-center rounded-[14px] border border-lilac/30 px-4 text-[13px] text-ink">
+                  Importer
+                </Link>
+                <Link to="/article/nouveau" className="aurora-grad flex h-10 items-center rounded-[14px] px-4 text-[13px] font-bold text-white">
+                  Ajouter
+                </Link>
+              </div>
+            </Empty>
+          )}
+          {items && valued.length > 0 && !visible.length && (
             <Empty title={query || filterCount ? 'Aucun article ne correspond' : 'Aucun article dans cette catégorie'}>
               <Link to="/article/nouveau" className="aurora-grad flex h-10 items-center rounded-[14px] px-4 text-[13px] font-bold text-white">
                 Ajouter
