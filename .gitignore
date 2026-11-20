@@ -2,6 +2,9 @@
 .obsidian/
 .claude/
 
+# Cahier des charges et tableau d'origine (copie de travail de l'Excel)
+Tableau excel collection.md
+
 # Dépendances et builds (le dossier app/ a aussi son propre .gitignore)
 node_modules/
 dist/
