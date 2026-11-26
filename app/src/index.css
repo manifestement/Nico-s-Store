@@ -1,24 +1,121 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/manrope';
-@import '@fontsource-variable/unbounded';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/archivo/standard.css';
 
-/* Thème Aurora */
-@theme {
-  --font-sans: 'Manrope Variable', system-ui, sans-serif;
-  --font-display: 'Unbounded Variable', system-ui, sans-serif;
+/*
+ * Charte « Nuit bleue »
+ * - Archivo élargi (font-stretch 125 %) pour les titres et les montants, Inter pour l'interface.
+ * - Le bleu sert à l'action (boutons, onglet actif, lien) ; le dégradé est réservé à la bulle de valeur.
+ * - Quatre palettes commutables (Réglages > Apparence) via <html data-theme="…">.
+ *   Les valeurs par défaut ci-dessous sont celles de « Cobalt ».
+ */
+@theme static {
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-display: 'Archivo Variable', system-ui, sans-serif;
 
-  --color-night: #0e0a24;
-  --color-deep: #150f35;
-  --color-sheet: #1b1442;
-  --color-bar: rgb(24 17 56 / 0.96);
-  --color-ink: #f5f3ff;
-  --color-soft: #ddd6fe;
-  --color-muted: #b8b2d9;
-  --color-faint: #9d97c2;
-  --color-lilac: #c4b5fd;
-  --color-pink: #f9a8d4;
+  --color-canvas: #070b16;
+  --color-surface: #0e1526;
+  --color-raise: #172038;
+  --color-sheet: #0f182c;
+  --color-line: rgb(148 170 220 / 0.14);
+  --color-line-strong: rgb(148 170 220 / 0.3);
+  --color-ink: #f2f6ff;
+  --color-soft: #c9d5f0;
+  --color-muted: #8e9bba;
+  --color-faint: #76839f;
+  --color-primary: #2a62f5;
+  --color-on-primary: #ffffff;
+  --color-accent: #7fb2ff;
+  --color-gain: #34d399;
+  --color-loss: #f87171;
+  --color-warn: #fbbf24;
+}
+
+:root {
+  color-scheme: dark;
+  --grad-ring: conic-gradient(from 210deg, #2a62f5, #38bdf8 35%, #c7f0ff 50%, #38bdf8 65%, #2a62f5);
+  --grad-line: linear-gradient(90deg, #2a62f5, #38bdf8);
+  --hero-core: radial-gradient(circle at 50% 18%, #18254a, #0b1222 70%);
+  --glow: rgb(42 98 245 / 0.42);
+  --glow-2: rgb(56 189 248 / 0.16);
+  --overlay: rgb(7 11 22 / 0.55);
+  --scrim: rgb(3 6 14 / 0.62);
+  --bar: rgb(14 21 38 / 0.82);
+}
+
+:root[data-theme='glacier'] {
+  --color-canvas: #061218;
+  --color-surface: #0b1d26;
+  --color-raise: #122b38;
+  --color-sheet: #0c2029;
+  --color-line: rgb(125 211 252 / 0.14);
+  --color-line-strong: rgb(125 211 252 / 0.3);
+  --color-ink: #effbff;
+  --color-soft: #c3e6f2;
+  --color-muted: #86aab8;
+  --color-faint: #6f93a2;
+  --color-primary: #38bdf8;
+  --color-on-primary: #04141c;
+  --color-accent: #67e8f9;
   --color-gain: #4ade80;
-  --color-loss: #fb7185;
+  --grad-ring: conic-gradient(from 210deg, #0ea5e9, #5eead4 35%, #e0fbff 50%, #5eead4 65%, #0ea5e9);
+  --grad-line: linear-gradient(90deg, #0ea5e9, #5eead4);
+  --hero-core: radial-gradient(circle at 50% 18%, #123544, #081820 70%);
+  --glow: rgb(56 189 248 / 0.38);
+  --glow-2: rgb(94 234 212 / 0.14);
+  --overlay: rgb(6 18 24 / 0.55);
+  --bar: rgb(11 29 38 / 0.82);
+}
+
+:root[data-theme='indigo'] {
+  --color-canvas: #090a1c;
+  --color-surface: #11132b;
+  --color-raise: #1a1d3d;
+  --color-sheet: #121530;
+  --color-line: rgb(165 180 252 / 0.14);
+  --color-line-strong: rgb(165 180 252 / 0.3);
+  --color-ink: #f3f4ff;
+  --color-soft: #d0d4f7;
+  --color-muted: #959ac2;
+  --color-faint: #7c81aa;
+  --color-primary: #4f5bf0;
+  --color-on-primary: #ffffff;
+  --color-accent: #a5b4fc;
+  --grad-ring: conic-gradient(from 210deg, #4f46e5, #3b82f6 35%, #a5f3fc 50%, #3b82f6 65%, #4f46e5);
+  --grad-line: linear-gradient(90deg, #6366f1, #38bdf8);
+  --hero-core: radial-gradient(circle at 50% 18%, #20225a, #0d0f26 70%);
+  --glow: rgb(79 70 229 / 0.42);
+  --glow-2: rgb(59 130 246 / 0.16);
+  --overlay: rgb(9 10 28 / 0.55);
+  --bar: rgb(17 19 43 / 0.82);
+}
+
+:root[data-theme='ice'] {
+  color-scheme: light;
+  --color-canvas: #f2f5fb;
+  --color-surface: #ffffff;
+  --color-raise: #eaeff8;
+  --color-sheet: #ffffff;
+  --color-line: rgb(15 32 80 / 0.1);
+  --color-line-strong: rgb(15 32 80 / 0.22);
+  --color-ink: #0b1530;
+  --color-soft: #2b3a5c;
+  --color-muted: #56637f;
+  --color-faint: #66728c;
+  --color-primary: #1f56e6;
+  --color-on-primary: #ffffff;
+  --color-accent: #1d4ed8;
+  --color-gain: #047857;
+  --color-loss: #dc2626;
+  --color-warn: #b45309;
+  --grad-ring: conic-gradient(from 210deg, #1f56e6, #38bdf8 35%, #bae6fd 50%, #38bdf8 65%, #1f56e6);
+  --grad-line: linear-gradient(90deg, #1f56e6, #0ea5e9);
+  --hero-core: radial-gradient(circle at 50% 18%, #ffffff, #eaf0fb 70%);
+  --glow: rgb(31 86 230 / 0.22);
+  --glow-2: rgb(14 165 233 / 0.1);
+  --overlay: rgb(255 255 255 / 0.72);
+  --scrim: rgb(11 21 48 / 0.35);
+  --bar: rgb(255 255 255 / 0.85);
 }
 
 @layer base {
@@ -29,9 +126,10 @@
   }
   body {
     margin: 0;
-    background: var(--color-night);
+    background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
     overscroll-behavior: none;
     overflow-x: clip;
     -webkit-tap-highlight-color: transparent;
@@ -44,7 +142,8 @@
     font: inherit;
     color: inherit;
   }
-  input::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     color: var(--color-faint);
   }
   input[type='number']::-webkit-outer-spin-button,
@@ -53,24 +152,54 @@
     margin: 0;
   }
   :focus-visible {
-    outline: 2px solid var(--color-pink);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 }
 
-@utility aurora-grad {
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+/* Titres : Archivo élargi. */
+@utility wide {
+  font-family: var(--font-display);
+  font-stretch: 125%;
 }
-@utility aurora-ring {
-  background: linear-gradient(135deg, #8b5cf6, #ec4899 40%, #f59e0b 70%, #22d3ee);
+/* Montants : chiffres de même largeur, pour que les colonnes de prix s'alignent. */
+@utility tabular {
+  font-variant-numeric: tabular-nums;
 }
-@utility glass {
-  background: rgb(255 255 255 / 0.05);
-  border: 1px solid rgb(255 255 255 / 0.08);
+/* Petite étiquette en capitales (« VALEUR ESTIMÉE »). */
+@utility eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+@utility fill-primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    0 8px 20px -8px var(--glow);
+}
+@utility ring-hero {
+  background: var(--grad-ring);
+}
+@utility card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
 }
 @utility field {
-  background: rgb(255 255 255 / 0.06);
-  border: 1px solid rgb(196 181 253 / 0.22);
+  background: var(--color-raise);
+  border: 1px solid var(--color-line);
+}
+@utility bar {
+  background: var(--bar);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+@utility overlay {
+  background: var(--overlay);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 @utility no-scrollbar {
   scrollbar-width: none;
@@ -87,33 +216,41 @@
   white-space: nowrap;
 }
 
-@keyframes au-float {
+@keyframes nb-float {
   0%,
   100% {
     translate: 0 0;
   }
   50% {
-    translate: 0 -8px;
+    translate: 0 -6px;
   }
 }
-@keyframes au-hint {
+@keyframes nb-hint {
   0%,
   100% {
     translate: 0 0;
   }
   50% {
-    translate: 0 5px;
+    translate: 0 4px;
   }
 }
-.au-float {
-  animation: au-float 6s ease-in-out infinite;
+.nb-float {
+  animation: nb-float 7s ease-in-out infinite;
 }
-.au-hint {
-  animation: au-hint 1.6s ease-in-out infinite;
+.nb-hint {
+  animation: nb-hint 1.8s ease-in-out infinite;
+}
+.press {
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+.press:active {
+  transform: scale(0.97);
 }
 @media (prefers-reduced-motion: reduce) {
-  .au-float,
-  .au-hint {
+  .nb-float,
+  .nb-hint {
     animation: none;
   }
   * {

@@ -3,11 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="apple-touch-icon" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Sneakers" />
+    <meta name="theme-color" content="#070B16" />
+    <script>
+      // Palette choisie dans les Réglages, appliquée avant le rendu pour éviter un flash.
+      try {
+        var t = localStorage.getItem('sn.theme')
+        if (/^(cobalt|glacier|indigo|ice)$/.test(t)) document.documentElement.dataset.theme = t
+        var bars = { cobalt: '#070B16', glacier: '#061218', indigo: '#090A1C', ice: '#F2F5FB' }
+        if (t && bars[t]) document.querySelector('meta[name="theme-color"]').setAttribute('content', bars[t])
+        // Palette claire : texte de la barre d'état en sombre.
+        if (t === 'ice') document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').setAttribute('content', 'default')
+      } catch (e) {}
+    </script>
     <title>Sneakers Nico</title>
   </head>
   <body>
