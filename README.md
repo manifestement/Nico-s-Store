@@ -56,6 +56,7 @@ Ensuite, l'appli fonctionne même sans connexion.
 
 ### Réglages
 - **Sauvegarde** : *Exporter* crée un fichier `.sqlite` (photos comprises) à ranger dans iCloud Drive ; *Importer* remplace toutes les données par celles d'une sauvegarde. Un point orange sur l'onglet Réglages rappelle de sauvegarder (jamais fait ou plus de 30 jours).
+- **Apparence** : quatre palettes au choix — *Cobalt* (par défaut), *Glacier*, *Indigo* et *Givre* (claire). Le choix est gardé sur le téléphone et n'est pas touché par une restauration de sauvegarde.
 - **Catégories** : créer, renommer, changer l'icône et le type de taille, réordonner avec les flèches. Une catégorie qui contient encore des articles ne peut pas être supprimée.
 - **Frais de revente** : commission, frais de paiement et frais d'envoi utilisés par le simulateur.
 - **Décote selon l'état** : la cote StockX est un prix neuf (DS) ; une paire portée est estimée à un pourcentage de cette cote (90 % pour 9,5/10, puis −8 % par point par défaut).

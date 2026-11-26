@@ -55,8 +55,8 @@ export const GearIcon = (p: P) => (
 const CATEGORY_PATHS: Record<CategoryIcon, React.ReactNode> = {
   shoe: (
     <>
-      <path d="M3 16.5c0-1.5.8-2.5 2-3l3-1.5 2-4 2.5 1 1 2.5 3.5 1.5c2 .8 4 1.6 4 3.5V18H3z" />
-      <path d="M3 18h18" />
+      <path d="M2.5 18v-7.2c0-.7.6-1.2 1.3-1l2.6.7c1.1.3 2.2-.2 2.7-1.2l.9-1.9c.3-.6 1-.8 1.5-.4l3.6 2.9c.5.4 1.1.7 1.8.9l2.7.7c1.6.4 2.9 1.9 2.9 3.6V18z" />
+      <path d="M2.5 15.2h19M11 9.6l1.3-1.2M13 11.2l1.3-1.2" />
     </>
   ),
   cloth: <path d="M8 3l-5 3 2 4 3-1v12h8V9l3 1 2-4-5-3c-.6 1.5-2.2 2.5-4 2.5S8.6 4.5 8 3z" />,

@@ -12,7 +12,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'Sneakers Nico',
         short_name: 'Sneakers',
@@ -21,8 +21,8 @@ export default defineConfig({
         display: 'standalone',
         start_url: './',
         scope: './',
-        background_color: '#0b0b0c',
-        theme_color: '#0b0b0c',
+        background_color: '#070B16',
+        theme_color: '#070B16',
         icons: [{ src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
       },
       workbox: {

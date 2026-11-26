@@ -3,7 +3,7 @@ import { db } from '../db/client'
 import { eur, formatItemSize, plural } from '../lib/format'
 import { backupIsStale, invalidate, useQuery, useSettings } from '../lib/store'
 import { CheckIcon, PlusIcon } from '../ui/icons'
-import { BottomNav, Empty, Halos, Thumb } from '../ui/kit'
+import { BottomNav, Empty, Halos, PageTitle, Thumb } from '../ui/kit'
 
 export default function Wishlist() {
   const navigate = useNavigate()
@@ -15,14 +15,11 @@ export default function Wishlist() {
       <Halos variant="b" />
       <div className="pt-safe relative flex flex-col gap-4 px-4">
         <div className="mt-3 flex min-h-[52px] items-center justify-between">
-          <div className="flex flex-col gap-0.5">
-            <h1 className="m-0 font-display text-2xl font-bold tracking-[-0.6px]">Wishlist</h1>
-            <span className="text-xs text-muted">{items ? `${plural(items.length, 'article suivi', 'articles suivis')}` : '…'}</span>
-          </div>
+          <PageTitle sub={items ? plural(items.length, 'article suivi', 'articles suivis') : '…'}>Wishlist</PageTitle>
           <Link
             to="/article/nouveau?statut=wishlist"
             aria-label="Ajouter à la wishlist"
-            className="aurora-grad flex h-11 w-11 items-center justify-center rounded-[14px] text-white shadow-[0_6px_20px_rgba(236,72,153,0.35)]"
+            className="fill-primary press flex h-[46px] w-[46px] items-center justify-center rounded-2xl"
           >
             <PlusIcon size={22} />
           </Link>
@@ -31,7 +28,7 @@ export default function Wishlist() {
         {items && !items.length && (
           <Empty title="Ta wishlist est vide">
             <span className="text-[13px] text-muted">Ajoute les paires que tu vises, avec ton prix cible.</span>
-            <Link to="/article/nouveau?statut=wishlist" className="aurora-grad flex h-10 items-center rounded-[14px] px-4 text-[13px] font-bold text-white">
+            <Link to="/article/nouveau?statut=wishlist" className="fill-primary flex h-10 items-center rounded-[14px] px-4 text-[13px] font-bold">
               Ajouter
             </Link>
           </Empty>
@@ -43,16 +40,16 @@ export default function Wishlist() {
             const hit = gap != null && gap <= 0
             const size = formatItemSize(w)
             return (
-              <article key={w.id} className={`rounded-[20px] ${hit ? 'aurora-ring p-[3px]' : 'bg-white/[0.08] p-px'}`}>
-                <div className="flex flex-col gap-3 rounded-[18px] bg-deep p-3">
+              <article key={w.id} className={`rounded-[22px] ${hit ? 'ring-hero p-[2px] shadow-[0_10px_40px_-12px_var(--glow)]' : 'bg-line p-px'}`}>
+                <div className="flex flex-col gap-3 rounded-[20px] bg-surface p-3">
                   <Link to={`/article/${w.id}`} className="flex items-center gap-3 text-ink">
                     <Thumb photoId={w.photo_id} icon={w.category_icon} brand={w.brand} size={60} />
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <span className="text-[15px] font-bold">{w.model}</span>
+                      <span className="text-[15px] font-semibold">{w.model}</span>
                       <span className="text-xs text-muted">{size ?? w.category_name}</span>
                     </div>
                   </Link>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-px overflow-hidden rounded-[14px] bg-line">
                     <Stat label="Cote" value={eur(w.market_price)} />
                     <Stat label="Prix cible" value={eur(w.target_price)} />
                     <Stat
@@ -62,7 +59,7 @@ export default function Wishlist() {
                     />
                   </div>
                   {hit && (
-                    <div className="flex items-center gap-2 rounded-xl bg-gain/12 px-2.5 py-2 text-[13px] font-semibold text-[#86EFAC]">
+                    <div className="flex items-center gap-2 rounded-xl bg-gain/12 px-2.5 py-2 text-[13px] font-semibold text-gain">
                       <CheckIcon size={16} />
                       Sous ton prix cible : c'est le moment
                     </div>
@@ -72,7 +69,7 @@ export default function Wishlist() {
                       href={w.value_url || `https://stockx.com/fr-fr/search?s=${encodeURIComponent(w.model)}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex h-10 flex-1 items-center justify-center rounded-[14px] border border-lilac/30 text-[13px] text-ink"
+                      className="press flex h-10 flex-1 items-center justify-center rounded-[14px] border border-line-strong text-[13px] font-semibold text-ink"
                     >
                       Voir la cote
                     </a>
@@ -83,7 +80,7 @@ export default function Wishlist() {
                         invalidate()
                         navigate(`/article/${w.id}/modifier`)
                       }}
-                      className="aurora-grad flex h-10 flex-1 cursor-pointer items-center justify-center rounded-[14px] border-0 text-[13px] font-bold text-white"
+                      className="fill-primary press flex h-10 flex-1 cursor-pointer items-center justify-center rounded-[14px] border-0 text-[13px] font-semibold"
                     >
                       Je l'ai eue
                     </button>
@@ -101,9 +98,11 @@ export default function Wishlist() {
 
 function Stat({ label, value, className = '' }: { label: string; value: string; className?: string }) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-[11px] text-muted">{label}</span>
-      <span className={`font-display text-[15px] font-semibold ${className}`}>{value}</span>
+    <div className="flex flex-col gap-1 bg-raise px-2.5 py-2">
+      <span className="eyebrow text-[10px] text-muted">{label}</span>
+      <span className={`wide tabular text-[15px] font-bold ${className}`} style={{ fontStretch: '112%' }}>
+        {value}
+      </span>
     </div>
   )
 }

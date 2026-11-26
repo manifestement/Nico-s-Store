@@ -184,10 +184,10 @@ export default function ItemForm() {
     <div className="relative mx-auto flex h-dvh w-full max-w-[560px] flex-col">
       <Halos />
       <header className="pt-safe relative flex flex-none items-center justify-between px-2 pb-2">
-        <button type="button" onClick={() => navigate(-1)} className="flex min-h-11 cursor-pointer items-center border-0 bg-transparent px-2.5 text-[15px] text-soft">
+        <button type="button" onClick={() => navigate(-1)} className="flex min-h-11 cursor-pointer items-center border-0 bg-transparent px-2.5 text-[15px] font-medium text-accent">
           Annuler
         </button>
-        <h1 className="m-0 font-display text-base font-semibold">{editId ? 'Modifier' : 'Nouvel article'}</h1>
+        <h1 className="wide m-0 text-base font-bold tracking-[-0.2px]">{editId ? 'Modifier' : 'Nouvel article'}</h1>
         <span className="w-[74px]" />
       </header>
 
@@ -206,11 +206,9 @@ export default function ItemForm() {
                   className={`flex w-16 flex-none cursor-pointer flex-col items-center gap-1.5 border-0 bg-transparent p-0 ${on ? 'text-ink' : 'text-muted'}`}
                 >
                   <span
-                    className="flex h-14 w-14 items-center justify-center rounded-2xl text-white"
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl ${on ? 'text-white' : 'field text-soft'}`}
                     style={
-                      on
-                        ? { background: tintFor(c.icon), boxShadow: '0 0 0 2px #0E0A24, 0 0 0 4px #F9A8D4' }
-                        : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(196,181,253,0.22)', color: '#DDD6FE' }
+                      on ? { background: tintFor(c.icon), boxShadow: '0 0 0 2px var(--color-canvas), 0 0 0 4px var(--color-primary)' } : undefined
                     }
                   >
                     <CategoryGlyph icon={c.icon} size={24} />
@@ -220,7 +218,7 @@ export default function ItemForm() {
               )
             })}
             <Link to="/reglages#categories" className="flex w-16 flex-none flex-col items-center gap-1.5 text-muted">
-              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-dashed border-lilac/40">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-dashed border-line-strong">
                 <PlusIcon size={20} />
               </span>
               <span className="text-[11px] font-semibold">Nouvelle</span>
@@ -231,8 +229,8 @@ export default function ItemForm() {
         <div className="flex items-center gap-2">
           {!editId && (
             <>
-              <button type="button" onClick={() => cameraInput.current?.click()} className="aurora-ring h-[76px] w-[76px] flex-none cursor-pointer rounded-[18px] border-0 p-0.5">
-                <span className="flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-deep text-[11px] font-semibold text-ink">
+              <button type="button" onClick={() => cameraInput.current?.click()} className="ring-hero h-[76px] w-[76px] flex-none cursor-pointer rounded-[18px] border-0 p-0.5">
+                <span className="flex h-full w-full flex-col items-center justify-center gap-1 rounded-[16px] bg-surface text-[11px] font-semibold text-ink">
                   <CameraIcon size={22} />
                   Photo
                 </span>
@@ -240,7 +238,7 @@ export default function ItemForm() {
               <button
                 type="button"
                 onClick={() => galleryInput.current?.click()}
-                className="flex h-[76px] w-[76px] flex-none cursor-pointer flex-col items-center justify-center gap-1 rounded-[18px] border border-dashed border-lilac/35 bg-white/5 text-[11px] text-soft"
+                className="flex h-[76px] w-[76px] flex-none cursor-pointer flex-col items-center justify-center gap-1 rounded-[18px] border border-dashed border-line-strong bg-surface text-[11px] font-medium text-soft"
               >
                 <GalleryIcon size={22} />
                 Galerie
@@ -319,13 +317,13 @@ export default function ItemForm() {
                   { value: 'FR', label: 'FR' },
                 ]}
               />
-              <button type="button" aria-label="Pointure inférieure" onClick={() => stepSize(-1)} className="field h-11 w-11 flex-none cursor-pointer rounded-[14px] text-lg">
+              <button type="button" aria-label="Pointure inférieure" onClick={() => stepSize(-1)} className="field press h-11 w-11 flex-none cursor-pointer rounded-[14px] text-lg text-soft">
                 −
               </button>
-              <span className="flex-1 text-center font-display text-lg font-semibold">
+              <span className="flex-1 text-center wide text-lg font-semibold">
                 {f.sizeUs == null ? '—' : sizeSystem === 'US' ? `US ${usText}` : `FR ${eu == null ? '?' : formatEu(eu)}`}
               </span>
-              <button type="button" aria-label="Pointure supérieure" onClick={() => stepSize(1)} className="field h-11 w-11 flex-none cursor-pointer rounded-[14px] text-lg">
+              <button type="button" aria-label="Pointure supérieure" onClick={() => stepSize(1)} className="field press h-11 w-11 flex-none cursor-pointer rounded-[14px] text-lg text-soft">
                 +
               </button>
             </div>
@@ -335,7 +333,7 @@ export default function ItemForm() {
               ) : (
                 <>
                   {sizeSystem === 'US' ? `= FR ${eu == null ? '?' : formatEu(eu)}` : `= US ${usText}`} (grille {gridName}) ·{' '}
-                  <button type="button" onClick={() => set('sizeUs', null)} className="cursor-pointer border-0 bg-transparent p-0 text-xs text-lilac underline">
+                  <button type="button" onClick={() => set('sizeUs', null)} className="cursor-pointer border-0 bg-transparent p-0 text-xs text-accent underline">
                     effacer
                   </button>
                 </>
@@ -401,7 +399,7 @@ export default function ItemForm() {
             </Field>
           ) : f.status === 'owned' ? (
             <Field label="Date d'achat">
-              <input type="date" value={f.purchaseDate} max={today()} onChange={(e) => set('purchaseDate', e.target.value)} className={`${inputClass} [color-scheme:dark]`} />
+              <input type="date" value={f.purchaseDate} max={today()} onChange={(e) => set('purchaseDate', e.target.value)} className={`${inputClass}`} />
             </Field>
           ) : (
             <span />
@@ -427,13 +425,13 @@ export default function ItemForm() {
         </div>
 
         {editId && (
-          <button type="button" onClick={() => void remove()} className="mt-2 min-h-11 cursor-pointer rounded-[14px] border border-loss/40 bg-transparent text-sm font-semibold text-loss">
+          <button type="button" onClick={() => void remove()} className="press mt-2 min-h-11 cursor-pointer rounded-[14px] border border-loss/40 bg-loss/10 text-sm font-semibold text-loss">
             Supprimer l'article
           </button>
         )}
       </div>
 
-      <div className="pb-safe relative flex flex-none flex-col gap-2 rounded-t-[20px] border-t border-lilac/20 bg-bar px-4 pt-3">
+      <div className="pb-safe relative flex flex-none flex-col gap-2 rounded-t-[24px] border-t border-line bar px-4 pt-3">
         {error && (
           <p role="alert" className="m-0 text-center text-[13px] text-loss">
             {error}

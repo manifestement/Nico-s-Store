@@ -5,7 +5,8 @@ import { conditionFactor } from '../domain/valuation'
 import { formatDate, parseNumber, plural } from '../lib/format'
 import { backupIsStale, invalidate, useQuery, useSettings } from '../lib/store'
 import { CATEGORY_ICONS, CategoryGlyph, ChevronDown, ChevronUp, ClockIcon, EditIcon, PlusIcon } from '../ui/icons'
-import { BottomNav, Button, Field, Halos, inputClass, Segmented, Sheet, tintFor } from '../ui/kit'
+import { applyTheme, currentTheme, THEMES, type ThemeId } from '../lib/theme'
+import { BottomNav, Button, Field, Halos, inputClass, PageTitle, Segmented, Sheet, tintFor } from '../ui/kit'
 
 const SIZE_TYPES: { value: SizeType; label: string; long: string }[] = [
   { value: 'shoe', label: 'Pointure', long: 'Pointure US/FR' },
@@ -24,6 +25,7 @@ export default function Settings() {
   const [catError, setCatError] = useState('')
   const [backupMsg, setBackupMsg] = useState('')
   const importInput = useRef<HTMLInputElement>(null)
+  const [theme, setTheme] = useState<ThemeId>(currentTheme)
 
   useEffect(() => {
     if (location.hash.endsWith('#categories')) document.getElementById('categories')?.scrollIntoView()
@@ -100,13 +102,15 @@ export default function Settings() {
     <div className="relative mx-auto min-h-dvh w-full max-w-[560px] pb-28">
       <Halos />
       <div className="pt-safe relative flex flex-col gap-4 px-4">
-        <h1 className="m-0 mt-3 flex min-h-[52px] items-center font-display text-2xl font-bold tracking-[-0.6px]">Réglages</h1>
+        <div className="mt-3 flex min-h-[52px] items-center">
+          <PageTitle>Réglages</PageTitle>
+        </div>
 
         <Section title="Sauvegarde">
-          <div className={`rounded-[20px] ${stale ? 'aurora-ring p-0.5' : 'bg-white/[0.08] p-px'}`}>
-            <div className="flex flex-col gap-3 rounded-[18px] bg-deep p-3.5">
+          <div className={`rounded-[20px] border bg-surface ${stale ? 'border-warn/50' : 'border-line'}`}>
+            <div className="flex flex-col gap-3 p-3.5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-[rgba(245,158,11,0.16)] text-[#FCD34D]">
+                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-warn/15 text-warn">
                   <ClockIcon />
                 </div>
                 <div className="flex flex-col gap-0.5">
@@ -137,8 +141,43 @@ export default function Settings() {
           </div>
         </Section>
 
+        <Section title="Apparence">
+          <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Palette de couleurs">
+            {THEMES.map((t) => {
+              const on = t.id === theme
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  onClick={() => {
+                    applyTheme(t.id)
+                    setTheme(t.id)
+                  }}
+                  className={`press flex cursor-pointer flex-col gap-2.5 rounded-[18px] border bg-surface p-2.5 text-left ${on ? 'border-primary ring-1 ring-primary' : 'border-line'}`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="relative flex h-14 items-end gap-1.5 overflow-hidden rounded-xl p-2"
+                    style={{ background: t.swatch[0], boxShadow: 'inset 0 0 0 1px rgba(128,140,170,0.25)' }}
+                  >
+                    <span className="h-7 w-7 rounded-full" style={{ background: `conic-gradient(from 210deg, ${t.swatch[1]}, ${t.swatch[2]}, ${t.swatch[1]})` }} />
+                    <span className="h-3 flex-1 rounded-full" style={{ background: t.swatch[1] }} />
+                    <span className="h-3 w-5 rounded-full" style={{ background: t.swatch[2], opacity: 0.7 }} />
+                  </span>
+                  <span className="flex flex-col gap-0.5 px-0.5">
+                    <span className="text-sm font-semibold">{t.name}</span>
+                    <span className="text-[11px] leading-tight text-muted">{t.hint}</span>
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </Section>
+
         <Section title="Catégories" id="categories">
-          <div className="glass flex flex-col rounded-[20px]">
+          <div className="card flex flex-col rounded-[20px]">
             {categories?.map((c, i) => (
               <CategoryRow
                 key={c.id}
@@ -157,7 +196,7 @@ export default function Settings() {
                 setCatError('')
                 setDraft({ name: '', icon: 'box', size_type: 'none' })
               }}
-              className="flex min-h-[52px] cursor-pointer items-center gap-2.5 border-0 bg-transparent px-3.5 text-sm font-bold text-pink"
+              className="flex min-h-[52px] cursor-pointer items-center gap-2.5 border-0 bg-transparent px-3.5 text-sm font-semibold text-accent"
             >
               <PlusIcon size={18} />
               Nouvelle catégorie
@@ -167,7 +206,7 @@ export default function Settings() {
         </Section>
 
         <Section title="Frais de revente">
-          <div className="glass flex flex-col rounded-[20px]">
+          <div className="card flex flex-col rounded-[20px]">
             {settings &&
               (
                 [
@@ -176,7 +215,7 @@ export default function Settings() {
                   ['fees.shipping_eur', "Frais d'envoi", '€'],
                 ] as const
               ).map(([key, label, unit], i) => (
-                <label key={key} className={`flex min-h-12 items-center justify-between px-3.5 text-sm ${i < 2 ? 'border-b border-white/[0.07]' : ''}`}>
+                <label key={key} className={`flex min-h-12 items-center justify-between px-3.5 text-sm ${i < 2 ? 'border-b border-line' : ''}`}>
                   {label}
                   <span className="flex items-center gap-1">
                     <input
@@ -184,7 +223,7 @@ export default function Settings() {
                       inputMode="decimal"
                       defaultValue={settings.raw[key]}
                       onBlur={(e) => void saveNumber(key, e.target.value)}
-                      className="h-8 w-16 rounded-[10px] border border-lilac/25 bg-deep px-2 text-right text-sm outline-none"
+                      className="tabular h-9 w-16 rounded-[10px] border border-line bg-raise px-2 text-right text-sm outline-none focus:border-primary"
                     />
                     <span className="w-4 text-muted">{unit}</span>
                   </span>
@@ -194,14 +233,14 @@ export default function Settings() {
         </Section>
 
         <Section title="Décote selon l'état">
-          <div className="glass flex flex-col gap-3 rounded-[20px] p-3.5">
+          <div className="card flex flex-col gap-3 rounded-[20px] p-3.5">
             <span className="text-[13px] text-soft">La cote est un prix neuf (DS). Un article porté est estimé à :</span>
             <div className="grid grid-cols-5 gap-1.5">
               {v &&
                 [9.5, 9, 8, 7, 5].map((c) => (
-                  <div key={c} className="flex flex-col items-center gap-0.5 rounded-xl bg-deep px-1 py-2">
+                  <div key={c} className="flex flex-col items-center gap-0.5 rounded-xl bg-raise px-1 py-2">
                     <span className="text-[11px] text-muted">{String(c).replace('.', ',')}/10</span>
-                    <span className="font-display text-[13px] font-semibold">{Math.round(conditionFactor(c, v) * 100)} %</span>
+                    <span className="wide tabular text-[13px] font-bold">{Math.round(conditionFactor(c, v) * 100)} %</span>
                   </div>
                 ))}
             </div>
@@ -247,11 +286,11 @@ export default function Settings() {
                     aria-label={`Icône ${ic}`}
                     aria-pressed={draft.icon === ic}
                     onClick={() => setDraft({ ...draft, icon: ic })}
-                    className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-[14px] border-0 text-white"
+                    className={`flex h-12 w-12 cursor-pointer items-center justify-center rounded-[14px] ${draft.icon === ic ? 'border-0 text-white' : 'field text-soft'}`}
                     style={
                       draft.icon === ic
-                        ? { background: tintFor(ic), boxShadow: '0 0 0 2px #1B1442, 0 0 0 4px #F9A8D4' }
-                        : { background: 'rgba(255,255,255,0.06)', color: '#DDD6FE' }
+                        ? { background: tintFor(ic), boxShadow: '0 0 0 2px var(--color-sheet), 0 0 0 4px var(--color-primary)' }
+                        : undefined
                     }
                   >
                     <CategoryGlyph icon={ic} size={22} />
@@ -270,7 +309,7 @@ export default function Settings() {
             )}
             <div className="flex gap-2 pb-2">
               {draft.id && (
-                <Button variant="ghost" className="h-12 flex-1 border-loss/40 text-loss" onClick={() => void removeDraft()}>
+                <Button variant="danger" className="h-12 flex-1" onClick={() => void removeDraft()}>
                   Supprimer
                 </Button>
               )}
@@ -290,7 +329,7 @@ export default function Settings() {
 function Section({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="flex scroll-mt-4 flex-col gap-2">
-      <h2 className="mx-1 my-0 text-[11px] font-bold tracking-[0.8px] text-muted uppercase">{title}</h2>
+      <h2 className="eyebrow mx-1 my-0 text-muted">{title}</h2>
       {children}
     </section>
   )
@@ -302,12 +341,12 @@ function CategoryRow({ cat, first, last, onEdit }: { cat: CategoryWithCount; fir
     invalidate()
   }
   return (
-    <div className="flex min-h-[60px] items-center gap-3 border-b border-white/[0.07] pr-1 pl-3">
+    <div className="flex min-h-[60px] items-center gap-3 border-b border-line pr-1 pl-3">
       <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl text-white" style={{ background: tintFor(cat.icon) }}>
         <CategoryGlyph icon={cat.icon} size={20} />
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="truncate text-sm font-bold">{cat.name}</span>
+        <span className="truncate text-sm font-semibold">{cat.name}</span>
         <span className="text-xs text-muted">
           {SIZE_TYPES.find((s) => s.value === cat.size_type)?.long} · {plural(cat.item_count, 'article')}
         </span>
